@@ -1,0 +1,88 @@
+<Window x:Class="Alpha.Branding.Bootstrapper.UninstallWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Alpha Premier | Branding Studio Uninstaller"
+        Icon="Assets/logo_phoenix.png"
+        Width="560" Height="380"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Background="{StaticResource BackgroundDark}"
+        Foreground="{StaticResource TextPrimary}"
+        FontFamily="Segoe UI, Poppins, sans-serif">
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0"
+                Background="{StaticResource SurfaceDark}"
+                BorderBrush="{StaticResource BorderSubtle}"
+                BorderThickness="1"
+                CornerRadius="12"
+                Padding="18,12"
+                Margin="0,0,0,16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Image Grid.Column="0"
+                       Source="Assets/logo_phoenix.png"
+                       Height="40" Width="40"
+                       Margin="0,0,14,0"
+                       VerticalAlignment="Center"
+                       RenderOptions.BitmapScalingMode="HighQuality"/>
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <TextBlock Text="Alpha Premier | Group of Companies" Foreground="{StaticResource TextPrimary}" FontSize="16" FontWeight="Bold"/>
+                    <TextBlock Text="Property Branding Studio — Uninstaller" Foreground="{StaticResource Gold}" FontSize="12" FontWeight="SemiBold"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Main Content -->
+        <Grid Grid.Row="1" Margin="0,0,0,16">
+            <!-- Ready View -->
+            <StackPanel x:Name="ReadyPanel" Visibility="Visible" VerticalAlignment="Center">
+                <TextBlock Text="Uninstall Confirmation" FontSize="15" FontWeight="Bold" Margin="0,0,0,8"/>
+                <TextBlock Text="Are you sure you want to completely remove Alpha Premier Realty Branding Studio and all of its components from your computer?"
+                           TextWrapping="Wrap" Foreground="{StaticResource TextSecondary}" Margin="0,0,0,8" LineHeight="20"/>
+            </StackPanel>
+
+            <!-- Uninstalling View -->
+            <StackPanel x:Name="UninstallingPanel" Visibility="Collapsed" VerticalAlignment="Center">
+                <TextBlock Text="Uninstalling..." FontSize="15" FontWeight="Bold" Margin="0,0,0,16"/>
+                <ProgressBar x:Name="UninstallProgressBar" Value="0" Maximum="100" Height="8" Margin="0,0,0,12"/>
+                <TextBlock x:Name="TxtStatus" Text="Removing application components..." Foreground="{StaticResource GoldLight}" FontSize="13"/>
+            </StackPanel>
+
+            <!-- Finished View -->
+            <StackPanel x:Name="FinishedPanel" Visibility="Collapsed" VerticalAlignment="Center">
+                <TextBlock Text="Uninstallation Complete" Foreground="{StaticResource GoldLight}" FontSize="16" FontWeight="Bold" Margin="0,0,0,8"/>
+                <TextBlock Text="Alpha Premier Realty Branding Studio was successfully removed from your computer."
+                           TextWrapping="Wrap" Foreground="{StaticResource TextSecondary}" Margin="0,0,0,8" LineHeight="20"/>
+            </StackPanel>
+
+            <!-- Error View -->
+            <StackPanel x:Name="ErrorPanel" Visibility="Collapsed" VerticalAlignment="Center">
+                <TextBlock Text="Uninstallation Failed" Foreground="#EF4444" FontSize="15" FontWeight="Bold" Margin="0,0,0,8"/>
+                <Border Background="#2B1A1A" BorderBrush="#7F1D1D" BorderThickness="1" CornerRadius="8" Padding="12" Margin="0,0,0,8">
+                    <TextBlock x:Name="TxtErrorMessage" TextWrapping="Wrap" Foreground="#FCA5A5" FontSize="12"/>
+                </Border>
+            </StackPanel>
+        </Grid>
+
+        <!-- Footer Buttons -->
+        <Border Grid.Row="2" BorderBrush="{StaticResource BorderSubtle}" BorderThickness="0,1,0,0" Padding="0,16,0,0">
+            <DockPanel LastChildFill="False">
+                <Button x:Name="BtnCancel" Content="Cancel" Click="BtnCancel_Click" DockPanel.Dock="Right" Margin="8,0,0,0" Width="90"/>
+                <Button x:Name="BtnUninstall" Style="{StaticResource PrimaryButton}" Content="UNINSTALL" Click="BtnUninstall_Click" DockPanel.Dock="Right" Width="110"/>
+                <Button x:Name="BtnClose" Style="{StaticResource PrimaryButton}" Content="CLOSE" Click="BtnClose_Click" DockPanel.Dock="Right" Width="100" Visibility="Collapsed"/>
+            </DockPanel>
+        </Border>
+    </Grid>
+</Window>
+
+

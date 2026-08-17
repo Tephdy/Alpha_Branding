@@ -1,0 +1,72 @@
+name: PR quality
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build-test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.x
+      - name: Restore
+        run: dotnet restore Alpha_Branding.sln
+      - name: Build
+        run: dotnet build Alpha_Branding.sln --configuration Release --no-restore
+      - name: Test
+        run: dotnet test Alpha_Branding.sln --configuration Release --no-build
+      - name: Format check
+        run: dotnet format Alpha_Branding.sln --verify-no-changes --no-restore
+      - name: Publish
+        run: dotnet publish src/Alpha.Branding/Alpha.Branding.csproj --configuration Release --runtime win-x64 --self-contained false --output artifacts/publish
+      - name: Package vulnerability audit
+        run: dotnet list Alpha_Branding.sln package --vulnerable --include-transitive
+      - name: Native application dependency scan
+        shell: pwsh
+        run: |
+          $forbidden = git grep -n -i -E 'Tauri|Electron|WebView2|webview|React|Vite|Next\.js|TypeScript|Node\.js' -- src tests
+          if ($LASTEXITCODE -eq 0) {
+            Write-Error "Forbidden web/wrapper framework references found:`n$forbidden"
+            exit 1
+          }
+          exit 0
+      - name: Anti-slop review
+        uses: peakoss/anti-slop@v0
+        with:
+          github-token: ${{ github.token }}
+          require-description: true
+          require-conventional-title: true
+          require-pr-template: true
+          blocked-paths: ""
+          close-pr: false
+          lock-pr: false
+          min-account-age: 0
+          min-profile-completeness: 0
+          min-global-merge-ratio: 0
+
+  installer:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.x
+      - name: Build EXE installer
+        shell: powershell
+        run: powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\installer\Build-Installer.ps1 -Version 1.0.0.0
+      - name: Validate EXE installer artifact
+        shell: powershell
+        run: |
+          $path = Join-Path $env:GITHUB_WORKSPACE 'artifacts\Alpha.Branding.Setup.exe'
+          if (-not (Test-Path -LiteralPath $path) -or (Get-Item -LiteralPath $path).Length -le 0) { throw 'EXE installer artifact is missing or empty.' }
+      - name: Upload EXE installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: Alpha.Branding-Setup
+          path: artifacts/Alpha.Branding.Setup.exe
+          if-no-files-found: error

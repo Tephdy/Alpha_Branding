@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,7 +19,7 @@
 <body>
 
   <div class="container">
-    <!-- Top Navbar Header (Logo & Title) -->
+    <!-- Top Navbar Header (Logo & Install App Only) -->
     <header>
       <div class="header-top">
         <img src="img/1.png" alt="Company Logo" class="header-logo">
@@ -26,7 +27,7 @@
       </div>
     </header>
 
-    <!-- Main Tool Container -->
+    <!-- Main Tool Container (Title, Status, File Input, Naming Rule, & Progress) -->
     <main class="main-content">
       <div class="controls-card">
         <div class="tool-header">
@@ -35,24 +36,12 @@
           <div id="frameStatus" class="status-badge loading">Loading branding frame...</div>
         </div>
 
-        <!-- 1. Upload Property Photos -->
         <div class="input-group">
           <label for="photosInput"><strong>Upload Property Photos:</strong></label>
           <input type="file" id="photosInput" accept="image/*" multiple disabled>
         </div>
 
-        <!-- 2. Property Type Dropdown -->
-        <div class="input-group">
-          <label for="propertyType"><strong>Property Type:</strong></label>
-          <select id="propertyType">
-            <option value="Condo" selected>Condo</option>
-            <option value="Commercial">Commercial</option>
-            <option value="Warehouse">Warehouse</option>
-            <option value="Lot">Lot</option>
-          </select>
-        </div>
-
-        <!-- 3. Bulk Rename & Sequential Prefix -->
+        <!-- Bulk Rename & Sequential Numbering Rule -->
         <div class="input-group">
           <label for="filenamePrefix"><strong>Batch Filename / Property Prefix:</strong></label>
           <div class="prefix-input-wrapper">
@@ -62,29 +51,8 @@
               placeholder="e.g. Pasig_Tower_Unit101" 
               value="AlphaPremier_Photo"
             >
-            <span class="prefix-preview">Output Format Preview: <strong id="patternPreview">Condo_AlphaPremier_Photo_01.webp</strong></span>
+            <span class="prefix-preview">Output Format Preview: <strong id="patternPreview">AlphaPremier_Photo_01.jpg</strong></span>
           </div>
-        </div>
-
-        <!-- 4. Property Description / Caption Field -->
-        <div class="input-group">
-          <label for="propertyCaption"><strong>Property Caption / Description (.TXT Output):</strong></label>
-          <textarea 
-            id="propertyCaption" 
-            rows="4" 
-            placeholder="e.g. 2 BR Condo Unit for Sale in Pasig City&#10;Price: ₱5,500,000&#10;Contact: 0917-XXX-XXXX"
-          ></textarea>
-        </div>
-
-        <!-- Google Drive Subfolder Name Input -->
-        <div class="input-group">
-          <label for="driveFolderName"><strong>Google Drive Folder Name:</strong></label>
-          <input 
-            type="text" 
-            id="driveFolderName" 
-            placeholder="e.g. Pasig_Luxury_Condo_Unit_101" 
-            value="Property_Export"
-          >
         </div>
 
         <!-- Loading Indicator & Progress Bar Section -->
@@ -97,12 +65,8 @@
           <div id="progressCount" class="progress-count">0 / 0 images</div>
         </div>
 
-        <!-- Action Buttons -->
-        <div class="button-group">
-          <button id="processBtn" class="btn primary" disabled>APPLY BRANDING</button>
-          <button id="downloadAllBtn" class="btn success" style="display: none;">Download All (.ZIP + .TXT)</button>
-          <button id="uploadDriveBtn" class="btn drive" style="display: none;">Upload to Google Drive</button>
-        </div>
+        <button id="processBtn" class="btn primary" disabled>APPLY BRANDING</button>
+        <button id="downloadAllBtn" class="btn success" style="display: none;">Download All (.ZIP)</button>
       </div>
 
       <!-- Preview & Results -->

@@ -4,11 +4,15 @@
 const photosInput = document.getElementById('photosInput');
 const processBtn = document.getElementById('processBtn');
 const downloadAllBtn = document.getElementById('downloadAllBtn');
+const uploadDriveBtn = document.getElementById('uploadDriveBtn');
 const frameStatus = document.getElementById('frameStatus');
 
-// Batch Rename & Sequential Numbering Elements
+// Property Details, Naming & Drive Folder Elements
+const propertyType = document.getElementById('propertyType');
+const driveFolderName = document.getElementById('driveFolderName');
 const filenamePrefix = document.getElementById('filenamePrefix');
 const patternPreview = document.getElementById('patternPreview');
+const propertyCaption = document.getElementById('propertyCaption');
 
 // Loader Elements
 const loadingState = document.getElementById('loadingState');
@@ -40,27 +44,31 @@ let loadedFrameImg = null;
 // ==========================================
 
 /**
- * Generates a clean sequential filename with zero-padding
+ * Generates a clean sequential filename incorporating Property Type
  */
 function generateFilename(prefix, index, total, extension = 'webp') {
+  const typeVal = propertyType ? propertyType.value : 'Condo';
   const cleanPrefix = (prefix || 'AlphaPremier_Photo').trim().replace(/[/\\?%*:|"<>]/g, '');
   const padDigits = total >= 100 ? 3 : 2; // Auto-switch to 001 if >= 100 items
   const sequenceNumber = String(index + 1).padStart(padDigits, '0');
-  return `${cleanPrefix}_${sequenceNumber}.${extension}`;
+  
+  return `${typeVal}_${cleanPrefix}_${sequenceNumber}.${extension}`;
 }
 
-// Live pattern preview listener & dynamic gallery update listener
+// Live pattern preview listeners
 if (filenamePrefix) {
-  filenamePrefix.addEventListener('input', () => {
-    updateLivePreviewAndGalleryNames();
-  });
+  filenamePrefix.addEventListener('input', updateLivePreviewAndGalleryNames);
+}
+
+if (propertyType) {
+  propertyType.addEventListener('change', updateLivePreviewAndGalleryNames);
 }
 
 function updateLivePreviewAndGalleryNames() {
   const prefixVal = filenamePrefix ? filenamePrefix.value : 'AlphaPremier_Photo';
   const totalCount = processedImages.length > 0 ? processedImages.length : 10;
   
-  // Update text sample in HTML
+  // Update text sample preview in HTML
   if (patternPreview) {
     patternPreview.textContent = generateFilename(prefixVal, 0, totalCount, 'webp');
   }
@@ -144,6 +152,7 @@ if (photosInput) {
     processedImages = [];
     if (previewSection) previewSection.style.display = 'none';
     if (downloadAllBtn) downloadAllBtn.style.display = 'none';
+    if (uploadDriveBtn) uploadDriveBtn.style.display = 'none';
 
     // Process selected files sequentially
     for (let i = 0; i < total; i++) {
@@ -157,11 +166,12 @@ if (photosInput) {
       }
     }
 
-    // Hide loader and show results
+    // Hide loader and show results & action buttons
     hideLoader();
     if (previewSection) previewSection.style.display = 'block';
-    if (downloadAllBtn && processedImages.length > 0) {
-      downloadAllBtn.style.display = 'inline-block';
+    if (processedImages.length > 0) {
+      if (downloadAllBtn) downloadAllBtn.style.display = 'inline-block';
+      if (uploadDriveBtn) uploadDriveBtn.style.display = 'inline-block';
     }
 
     // Update live pattern sample after processing
@@ -206,7 +216,7 @@ function processAndRenderPhoto(file, index, totalCount) {
         // Convert canvas output to WEBP format
         const brandedDataUrl = canvas.toDataURL('image/webp', WEBP_QUALITY);
 
-        // Generate sequential filename based on input field value
+        // Generate sequential filename based on inputs
         const userPrefix = filenamePrefix ? filenamePrefix.value : 'AlphaPremier_Photo';
         const webpFileName = generateFilename(userPrefix, index, totalCount, 'webp');
 
@@ -249,7 +259,7 @@ function createGalleryCard(item) {
 }
 
 // ==========================================
-// BATCH ZIP DOWNLOAD LOGIC
+// BATCH ZIP DOWNLOAD LOGIC (INCLUDES .TXT CAPTION)
 // ==========================================
 
 if (downloadAllBtn) {
@@ -260,22 +270,29 @@ if (downloadAllBtn) {
     }
 
     const zip = new JSZip();
+    const typeVal = propertyType ? propertyType.value : 'Condo';
     const userPrefix = filenamePrefix ? filenamePrefix.value : 'AlphaPremier_Photo';
-    const cleanFolderName = (userPrefix || 'Branded_Photos').trim().replace(/[/\\?%*:|"<>]/g, '');
-    
+    const rawFolderName = driveFolderName ? driveFolderName.value : `${typeVal}_${userPrefix}`;
+    const captionText = propertyCaption ? propertyCaption.value.trim() : '';
+
+    const cleanFolderName = (rawFolderName || 'Property_Export').trim().replace(/[/\\?%*:|"<>]/g, '');
     const folder = zip.folder(cleanFolderName);
 
+    // 1. Save .TXT caption file inside the ZIP archive if populated
+    if (captionText) {
+      const fullCaptionText = `PROPERTY TYPE: ${typeVal.toUpperCase()}\n----------------------------\n${captionText}`;
+      folder.file(`${cleanFolderName}_Caption.txt`, fullCaptionText);
+    }
+
+    // 2. Add processed WebP images into ZIP
     processedImages.forEach((img, idx) => {
-      // Re-evaluate filename to ensure current input prefix is respected
       const currentFilename = generateFilename(userPrefix, idx, processedImages.length, 'webp');
-      
-      // Strip base64 header for WebP
       const base64Data = img.src.replace(/^data:image\/[a-z]+;base64,/, '');
       folder.file(currentFilename, base64Data, { base64: true });
     });
 
     showLoader();
-    updateProgress(100, 100, 'Generating WebP ZIP archive...');
+    updateProgress(100, 100, 'Generating WebP ZIP & Caption archive...');
 
     const content = await zip.generateAsync({ type: 'blob' });
     const link = document.createElement('a');
@@ -284,6 +301,54 @@ if (downloadAllBtn) {
     link.click();
 
     hideLoader();
+  });
+}
+
+// ==========================================
+// GOOGLE DRIVE UPLOAD LOGIC
+// ==========================================
+
+if (uploadDriveBtn) {
+  uploadDriveBtn.addEventListener('click', async () => {
+    const selectedType = propertyType ? propertyType.value : 'Condo';
+    const userPrefix = filenamePrefix ? filenamePrefix.value : 'AlphaPremier_Photo';
+    const rawFolderName = driveFolderName ? driveFolderName.value : `${selectedType}_${userPrefix}`;
+    const captionText = propertyCaption ? propertyCaption.value.trim() : '';
+
+    const cleanFolderName = (rawFolderName || 'Property_Export').trim().replace(/[/\\?%*:|"<>]/g, '');
+
+    // Prepare payload for Apps Script
+    const payload = {
+      propertyType: selectedType,
+      folderName: cleanFolderName,
+      caption: captionText,
+      files: processedImages.map((img, idx) => ({
+        name: generateFilename(userPrefix, idx, processedImages.length, 'webp'),
+        base64: img.src.replace(/^data:image\/[a-z]+;base64,/, '')
+      }))
+    };
+
+    showLoader();
+    updateProgress(100, 100, `Uploading to Google Drive (${selectedType} folder / "${cleanFolderName}")...`);
+
+    try {
+      const response = await fetch('https://script.google.com/macros/s/AKfycbzrm6U3RB0n5bMGkooRPsqmZNGS8ez3DaCebwcoC95O0AMjYgxVfGDs7eFlDhizRoaF/exec', {
+        method: 'POST',
+        body: JSON.stringify(payload)
+      });
+
+      const res = await response.json();
+      if (res.success) {
+        alert(`Successfully uploaded to Google Drive!\n\nCategory: ${selectedType}\nFolder Name: ${cleanFolderName}\nView Link: ${res.folderUrl}`);
+      } else {
+        alert('Upload failed: ' + res.error);
+      }
+    } catch (err) {
+      console.error('Google Drive Upload Error:', err);
+      alert('An error occurred during Google Drive upload.');
+    } finally {
+      hideLoader();
+    }
   });
 }
 

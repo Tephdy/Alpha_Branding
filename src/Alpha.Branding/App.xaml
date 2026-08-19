@@ -1,0 +1,313 @@
+<Application x:Class="Alpha.Branding.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Alpha.Branding"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <!-- Alpha Premier Official Brand Color Palette (from alphapremiergroup.com) -->
+        <Color x:Key="ColorBackgroundDark">#0A0A0A</Color>
+        <Color x:Key="ColorSurfaceDark">#111215</Color>
+        <Color x:Key="ColorSurfaceElevated">#18191E</Color>
+        <Color x:Key="ColorSurfaceInput">#0D0E10</Color>
+        <Color x:Key="ColorBorderSubtle">#423722</Color>
+        <Color x:Key="ColorBorderHover">#735E35</Color>
+        <Color x:Key="ColorGold">#C5A059</Color>
+        <Color x:Key="ColorGoldLight">#E2C285</Color>
+        <Color x:Key="ColorGoldDark">#9E7B35</Color>
+
+        <!-- Brushes -->
+        <SolidColorBrush x:Key="BackgroundDark" Color="{StaticResource ColorBackgroundDark}"/>
+        <SolidColorBrush x:Key="SurfaceDark" Color="{StaticResource ColorSurfaceDark}"/>
+        <SolidColorBrush x:Key="SurfaceElevated" Color="{StaticResource ColorSurfaceElevated}"/>
+        <SolidColorBrush x:Key="SurfaceInput" Color="{StaticResource ColorSurfaceInput}"/>
+        <SolidColorBrush x:Key="BorderSubtle" Color="{StaticResource ColorBorderSubtle}"/>
+        <SolidColorBrush x:Key="BorderHover" Color="{StaticResource ColorBorderHover}"/>
+        <SolidColorBrush x:Key="Gold" Color="{StaticResource ColorGold}"/>
+        <SolidColorBrush x:Key="GoldLight" Color="{StaticResource ColorGoldLight}"/>
+        <SolidColorBrush x:Key="GoldDark" Color="{StaticResource ColorGoldDark}"/>
+        <SolidColorBrush x:Key="GoldSubtle" Color="#252015"/>
+        <SolidColorBrush x:Key="Charcoal" Color="{StaticResource ColorBackgroundDark}"/>
+
+        <SolidColorBrush x:Key="TextPrimary" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="TextSecondary" Color="#B0B4BC"/>
+        <SolidColorBrush x:Key="TextMuted" Color="#6C727F"/>
+        <SolidColorBrush x:Key="SuccessGreen" Color="#22C55E"/>
+
+        <!-- Brand Gradients -->
+        <LinearGradientBrush x:Key="GoldGradient" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#E2C285" Offset="0"/>
+            <GradientStop Color="#C5A059" Offset="0.6"/>
+            <GradientStop Color="#A37E36" Offset="1"/>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="GoldGradientHover" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FFFFFF" Offset="0"/>
+            <GradientStop Color="#F0D9A8" Offset="0.5"/>
+            <GradientStop Color="#E2C285" Offset="1"/>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="DarkHeaderGradient" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#141519" Offset="0"/>
+            <GradientStop Color="#0D0E10" Offset="1"/>
+        </LinearGradientBrush>
+
+        <!-- Converters -->
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <local:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+        <local:CountToVisibilityConverter x:Key="CountToVisibilityConverter"/>
+        <local:EmptyToVisibilityConverter x:Key="EmptyToVisibilityConverter"/>
+
+        <!-- Default Button Style -->
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource SurfaceElevated}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderSubtle}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="16,9"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="8"
+                                Padding="{TemplateBinding Padding}"
+                                SnapsToDevicePixels="True">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#22242B"/>
+                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource Gold}"/>
+                                <Setter Property="Foreground" Value="{StaticResource GoldLight}"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource GoldLight}"/>
+                                <Setter TargetName="border" Property="Background" Value="#252730"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#121316"/>
+                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource GoldDark}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.35"/>
+                                <Setter Property="Cursor" Value="Arrow"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Primary Gold Button Style (Matches .hero-btn from website) -->
+        <Style x:Key="PrimaryButton" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource GoldGradient}"/>
+            <Setter Property="Foreground" Value="#000000"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Gold}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="20,10"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="8"
+                                Padding="{TemplateBinding Padding}"
+                                SnapsToDevicePixels="True">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource GoldGradientHover}"/>
+                                <Setter TargetName="border" Property="BorderBrush" Value="#FFFFFF"/>
+                                <Setter Property="Foreground" Value="#000000"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#FFFFFF"/>
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource GoldGradientHover}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource GoldDark}"/>
+                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource GoldDark}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.35"/>
+                                <Setter Property="Cursor" Value="Arrow"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Signature ToolTip Style -->
+        <Style TargetType="ToolTip">
+            <Setter Property="Background" Value="{StaticResource SurfaceElevated}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderSubtle}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToolTip">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter Content="{TemplateBinding Content}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Secondary Outlined Button Style -->
+        <Style x:Key="SecondaryButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Background" Value="{StaticResource SurfaceDark}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderSubtle}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+            <Setter Property="Padding" Value="16,9"/>
+        </Style>
+
+        <!-- Small Action Button Style -->
+        <Style x:Key="SmallActionButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Background" Value="{StaticResource SurfaceElevated}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderSubtle}"/>
+        </Style>
+
+        <!-- Small Gold Action Button Style -->
+        <Style x:Key="SmallGoldButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+            <Setter Property="Padding" Value="12,5"/>
+            <Setter Property="FontSize" Value="11"/>
+        </Style>
+
+        <!-- Dark TextBox Style -->
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="{StaticResource SurfaceInput}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderSubtle}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="CaretBrush" Value="{StaticResource Gold}"/>
+            <Setter Property="SelectionBrush" Value="{StaticResource Gold}"/>
+            <Setter Property="SelectionOpacity" Value="0.4"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="8"
+                                SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          Focusable="False"
+                                          HorizontalScrollBarVisibility="Hidden"
+                                          VerticalScrollBarVisibility="Hidden"
+                                          Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource BorderHover}"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource Gold}"/>
+                                <Setter TargetName="border" Property="Background" Value="#121317"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="border" Property="Opacity" Value="0.4"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Golden ProgressBar Style -->
+        <Style TargetType="ProgressBar">
+            <Setter Property="Background" Value="{StaticResource SurfaceInput}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderSubtle}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="{StaticResource GoldGradient}"/>
+            <Setter Property="Height" Value="8"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ProgressBar">
+                        <Grid x:Name="TemplateRoot">
+                            <Border Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="4"/>
+                            <Border x:Name="PART_Track" Margin="1"/>
+                            <Decorator x:Name="PART_Indicator" HorizontalAlignment="Left" Margin="1">
+                                <Border x:Name="Indicator"
+                                        Background="{TemplateBinding Foreground}"
+                                        CornerRadius="3"/>
+                            </Decorator>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Alpha Premier Signature Golden ScrollBar Style (Matches website ::-webkit-scrollbar) -->
+        <Style TargetType="ScrollBar">
+            <Setter Property="Background" Value="{StaticResource BackgroundDark}"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Grid x:Name="Bg" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                            <Track x:Name="PART_Track" IsDirectionReversed="True" IsEnabled="{TemplateBinding IsMouseOver}">
+                                <Track.Thumb>
+                                    <Thumb>
+                                        <Thumb.Template>
+                                            <ControlTemplate TargetType="Thumb">
+                                                <Border Background="{StaticResource Gold}"
+                                                        CornerRadius="4"
+                                                        Margin="2"
+                                                        BorderBrush="{StaticResource BackgroundDark}"
+                                                        BorderThickness="1"/>
+                                            </ControlTemplate>
+                                        </Thumb.Template>
+                                    </Thumb>
+                                </Track.Thumb>
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="Orientation" Value="Vertical">
+                    <Setter Property="Width" Value="10"/>
+                </Trigger>
+                <Trigger Property="Orientation" Value="Horizontal">
+                    <Setter Property="Height" Value="10"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Application.Resources>
+</Application>
+
+

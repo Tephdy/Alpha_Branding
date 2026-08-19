@@ -1,0 +1,99 @@
+<Window x:Class="Alpha.Branding.Bootstrapper.InstallWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Alpha Premier | Branding Studio Setup"
+        Icon="Assets/logo_phoenix.png"
+        Width="600" Height="450"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Background="{StaticResource BackgroundDark}"
+        Foreground="{StaticResource TextPrimary}"
+        FontFamily="Segoe UI, Poppins, sans-serif">
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0"
+                Background="{StaticResource SurfaceDark}"
+                BorderBrush="{StaticResource BorderSubtle}"
+                BorderThickness="1"
+                CornerRadius="12"
+                Padding="18,12"
+                Margin="0,0,0,16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Image Grid.Column="0"
+                       Source="Assets/logo_phoenix.png"
+                       Height="44" Width="44"
+                       Margin="0,0,14,0"
+                       VerticalAlignment="Center"
+                       RenderOptions.BitmapScalingMode="HighQuality"/>
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <TextBlock Text="Alpha Premier | Group of Companies" Foreground="{StaticResource TextPrimary}" FontSize="16" FontWeight="Bold"/>
+                    <TextBlock Text="Property Branding Studio — Setup" Foreground="{StaticResource Gold}" FontSize="12" FontWeight="SemiBold"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Main Content Area -->
+        <Grid Grid.Row="1" Margin="0,0,0,16">
+            <!-- Ready View -->
+            <StackPanel x:Name="ReadyPanel" Visibility="Visible">
+                <TextBlock Text="Ready to Install" FontSize="16" FontWeight="Bold" Margin="0,0,0,8"/>
+                <TextBlock Text="This setup will install Alpha Premier Realty Branding Studio on your computer. You do not need administrator privileges."
+                           TextWrapping="Wrap" Foreground="{StaticResource TextSecondary}" Margin="0,0,0,16" LineHeight="20"/>
+
+                <TextBlock Text="Destination Folder:" FontWeight="Bold" Foreground="{StaticResource Gold}" FontSize="11" Margin="0,0,0,6"/>
+                <Border Background="{StaticResource SurfaceDark}" BorderBrush="{StaticResource BorderSubtle}" BorderThickness="1" CornerRadius="8" Padding="12,10" Margin="0,0,0,8">
+                    <TextBlock x:Name="TxtInstallPath" TextWrapping="Wrap" Foreground="{StaticResource TextPrimary}" FontSize="12"/>
+                </Border>
+
+                <TextBlock x:Name="TxtVersionInfo" Text="Version: 1.0.0.0" Foreground="{StaticResource TextMuted}" FontSize="12" Margin="0,4,0,0"/>
+            </StackPanel>
+
+            <!-- Installing View -->
+            <StackPanel x:Name="InstallingPanel" Visibility="Collapsed" VerticalAlignment="Center">
+                <TextBlock Text="Installing Alpha Premier Realty Branding Studio..." FontSize="16" FontWeight="Bold" Margin="0,0,0,16"/>
+                <ProgressBar x:Name="InstallProgressBar" Value="0" Maximum="100" Height="8" Margin="0,0,0,12"/>
+                <TextBlock x:Name="TxtStatus" Text="Extracting application files..." Foreground="{StaticResource GoldLight}" FontSize="13"/>
+            </StackPanel>
+
+            <!-- Finished View -->
+            <StackPanel x:Name="FinishedPanel" Visibility="Collapsed" VerticalAlignment="Center">
+                <TextBlock Text="Installation Completed" Foreground="{StaticResource GoldLight}" FontSize="18" FontWeight="Bold" Margin="0,0,0,8"/>
+                <TextBlock Text="Alpha Premier Realty Branding Studio has been successfully installed on your computer."
+                           TextWrapping="Wrap" Foreground="{StaticResource TextSecondary}" Margin="0,0,0,20" LineHeight="20"/>
+
+                <CheckBox x:Name="ChkLaunchApp" IsChecked="True" VerticalAlignment="Center" Margin="0,0,0,8">
+                    <TextBlock Text="Launch Alpha Premier Realty Branding Studio now" Foreground="{StaticResource TextPrimary}" Margin="6,0,0,0"/>
+                </CheckBox>
+            </StackPanel>
+
+            <!-- Error View -->
+            <StackPanel x:Name="ErrorPanel" Visibility="Collapsed" VerticalAlignment="Center">
+                <TextBlock Text="Installation Encountered an Error" Foreground="#EF4444" FontSize="16" FontWeight="Bold" Margin="0,0,0,8"/>
+                <Border Background="#2B1A1A" BorderBrush="#7F1D1D" BorderThickness="1" CornerRadius="8" Padding="12" Margin="0,0,0,16">
+                    <TextBlock x:Name="TxtErrorMessage" TextWrapping="Wrap" Foreground="#FCA5A5" FontSize="12"/>
+                </Border>
+            </StackPanel>
+        </Grid>
+
+        <!-- Footer Buttons -->
+        <Border Grid.Row="2" BorderBrush="{StaticResource BorderSubtle}" BorderThickness="0,1,0,0" Padding="0,16,0,0">
+            <DockPanel LastChildFill="False">
+                <Button x:Name="BtnCancel" Content="Cancel" Click="BtnCancel_Click" DockPanel.Dock="Right" Margin="8,0,0,0" Width="90"/>
+                <Button x:Name="BtnInstall" Style="{StaticResource PrimaryButton}" Content="INSTALL" Click="BtnInstall_Click" DockPanel.Dock="Right" Width="110"/>
+                <Button x:Name="BtnFinish" Style="{StaticResource PrimaryButton}" Content="FINISH" Click="BtnFinish_Click" DockPanel.Dock="Right" Width="110" Visibility="Collapsed"/>
+            </DockPanel>
+        </Border>
+    </Grid>
+</Window>
+
+

@@ -660,3 +660,124 @@ footer p {
     font-size: 13px;
   }
 }
+
+/* Property Caption Textarea Theme Styling */
+#propertyCaption {
+  width: 100%;
+  padding: 12px;
+  background-color: var(--bg-input, #1e1e1e);
+  color: var(--text-light, #f0f0f0);
+  border: 1px solid var(--border-color, #333333);
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.5;
+  box-sizing: border-box;
+  resize: vertical;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#propertyCaption:focus {
+  outline: none;
+  border-color: var(--gold-primary, #d4af37);
+  box-shadow: 0 0 8px rgba(212, 175, 55, 0.25);
+}
+
+#propertyCaption::placeholder {
+  color: var(--text-muted, #888888);
+  opacity: 0.8;
+}
+
+/* Google Drive Button Styling */
+.btn.drive {
+  background-color: #0f9d58 !important;
+  color: #ffffff !important;
+  border: none;
+}
+
+.btn.drive:hover {
+  background-color: #0b8043 !important;
+}
+
+/* Button Group Alignment */
+.button-group {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 15px;
+}
+
+.button-group .btn {
+  flex: 1;
+  min-width: 160px;
+}
+
+@media (max-width: 768px) {
+  .button-group .btn {
+    flex: 1 1 100%;
+  }
+}
+
+/* Select Dropdown Theme Styling */
+select#propertyType {
+  width: 100%;
+  padding: 10px 12px;
+  background-color: var(--bg-input, #1e1e1e);
+  color: var(--text-light, #f0f0f0);
+  border: 1px solid var(--border-color, #333333);
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22293.4%22%20height%3D%22293.4%22%3E%3Cpath%20fill%3D%22%23d4af37%22%20d%3D%22M20.1%2073.9l126.6%20126.6%20126.6-126.6%2020.1%2020.1-146.7%20146.7-146.7-146.7z%22%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px top 50%;
+  background-size: 12px auto;
+}
+
+select#propertyType:focus {
+  outline: none;
+  border-color: var(--gold-primary, #d4af37);
+  box-shadow: 0 0 8px rgba(212, 175, 55, 0.25);
+}
+
+select#propertyType option {
+  background-color: #1e1e1e;
+  color: #f0f0f0;
+  padding: 8px;
+}
+
+/* Google Drive Folder Name & Text Inputs */
+#folderName,
+#filenamePrefix,
+#propertyCaption,
+select#propertyType,
+input[type="text"] {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background-color: var(--bg-input);
+  color: var(--text-light);
+  font-size: 14px;
+  line-height: 1.5;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#folderName:focus,
+#filenamePrefix:focus,
+#propertyCaption:focus,
+select#propertyType:focus,
+input[type="text"]:focus {
+  outline: none;
+  border-color: var(--gold-primary);
+  box-shadow: 0 0 8px rgba(212, 175, 55, 0.25);
+}
+
+#folderName::placeholder {
+  color: var(--text-muted);
+  opacity: 0.8;
+}
